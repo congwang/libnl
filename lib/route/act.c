@@ -21,6 +21,7 @@
 #include <netlink/utils.h>
 #include <netlink-private/route/tc-api.h>
 #include <netlink/route/link.h>
+#include <netlink/route/action.h>
 
 
 static struct nl_object_ops act_obj_ops;
@@ -63,6 +64,36 @@ int rtnl_act_remove(struct rtnl_act **head, struct rtnl_act *act)
         }
 
 	return -NLE_OBJ_NOTFOUND;
+}
+
+int rtnl_act_copy(struct rtnl_act **to, struct rtnl_act **from)
+{
+	struct rtnl_act *to_act, *from_act;
+
+	if (*from == NULL) {
+		*to = NULL;
+		return 0;
+	}
+
+	from_act = *from;
+	to_act = *to;
+	while (from_act->a_next) {
+		struct rtnl_tc *tc = TC_CAST(from_act);
+		struct rtnl_tc_ops *ops = rtnl_tc_get_ops(tc);
+		struct rtnl_act *nact;
+
+		nact = rtnl_act_alloc();
+		if (!nact)
+			return -NLE_NOMEM;
+
+		if (ops->to_clone)
+			ops->to_clone(OBJ_CAST(to_act), OBJ_CAST(from_act));
+		from_act = from_act->a_next;
+		to_act->a_next = nact;
+		to_act = nact;
+	}
+
+	return 0;
 }
 
 static int rtnl_act_fill_one(struct nl_msg *msg, struct rtnl_act *act, int order)
