@@ -151,6 +151,7 @@ noinst_HEADERS = \
 	linux-private/linux/snmp.h \
 	linux-private/linux/xfrm.h \
 	linux-private/linux/sock_diag.h \
+	linux-private/linux/tcp.h \
 	linux-private/linux/tc_ematch/tc_em_meta.h \
 	netlink-private/genl.h \
 	netlink-private/netlink.h \

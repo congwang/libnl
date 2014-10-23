@@ -22,6 +22,7 @@
 #include <netlink/netfilter/ct.h>
 #include <netlink-private/route/tc-api.h>
 #include <linux/tc_act/tc_mirred.h>
+#include <linux/tcp.h>
 
 #define NL_SOCK_BUFSIZE_SET	(1<<0)
 #define NL_SOCK_PASSCRED	(1<<1)

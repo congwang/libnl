@@ -580,7 +580,8 @@ static int idiagnl_msg_clone(struct nl_object *_dst, struct nl_object *_src)
 
 static struct nla_policy ext_policy[IDIAG_ATTR_MAX] = {
 	[IDIAG_ATTR_MEMINFO]    = { .minlen = sizeof(struct inet_diag_meminfo) },
-	[IDIAG_ATTR_INFO]       = { .minlen = sizeof(struct tcp_info)	},
+	/* Older kernel doesn't have some new fields at the end */
+	[IDIAG_ATTR_INFO]       = { .minlen = offsetof(struct tcp_info, tcpi_rcv_rtt) },
 	[IDIAG_ATTR_VEGASINFO]  = { .minlen = sizeof(struct tcpvegas_info) },
 	[IDIAG_ATTR_CONG]       = { .type = NLA_STRING },
 	[IDIAG_ATTR_TOS]        = { .type = NLA_U8 },

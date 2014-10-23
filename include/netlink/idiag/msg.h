@@ -13,6 +13,7 @@
 #define NETLINK_IDIAGNL_MSG_H_
 
 #include <netlink/netlink.h>
+#include <linux/tcp.h>
 
 #ifdef __cplusplus
 extern "C" {
